@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memories</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            position: relative;
+            width: 150px;
+            height: 200px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin: 0 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Hide overflow content */
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: scale(1.1);
+        }
+
+        .card img {
+            display: none; /* Hide images initially */
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.5);
+            user-select: none; /* Disable text selection for the watermark */
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #555;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Style the audio controls */
+        audio {
+            display: none; /* Hide the default audio controls */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Music -->
+    <audio id="backgroundAudio" loop>
+        <source src="timro_pratiksha.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Card 1 -->
+    <div class="card" onclick="showCardInfo('Card 1', 'jp1.jpeg')">
+        <div class="watermark">Click to view</div>
+        <img src="jp1.jpeg" alt="Card 1">
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card" onclick="showCardInfo('Card 2', 'jp2.jpeg')">
+        <div class="watermark">Click to view</div>
+        <img src="jp2.jpeg" alt="Card 2">
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card" onclick="showCardInfo('Card 3', 'jp3.jpeg')">
+        <div class="watermark">Click to view</div>
+        <img src="jp3.jpeg" alt="Card 3">
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeModal()">
+        <div class="modal" id="modal">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <img id="modalImage" style="max-width: 100%; max-height: 80vh;" alt="Maximized Card">
+            <div class="message" id="message">Your additional message goes here.</div>
+        </div>
+    </div>
+
+    <script>
+        var backgroundAudio = document.getElementById("backgroundAudio");
+
+        document.body.addEventListener("click", function () {
+            // Play audio on user interaction
+            backgroundAudio.play().catch(function (error) {
+                console.error("Audio playback error:", error.message);
+            });
+        });
+
+        function showCardInfo(cardName, imagePath) {
+            var modal = document.getElementById("modal");
+            var modalImage = document.getElementById("modalImage");
+            var message = document.getElementById("message");
+
+            // Display watermark
+            var card = event.currentTarget;
+            var watermark = card.querySelector(".watermark");
+            watermark.style.display = "none"; // Hide watermark
+
+            // Display image
+            var image = card.querySelector("img");
+            image.style.display = "block";
+
+            // Set card-specific message
+            switch (cardName) {
+                case "Card 1":
+                    message.innerText = "BE HAPPY!,Enjoy Every Moment Like It's Your Last!";
+                    break;
+                case "Card 2":
+                    message.innerText = "Your relationship with others is what defines your existence";
+                    break;
+                case "Card 3":
+                    message.innerText = "Happy birthday,Buddy!";
+                    break;
+                default:
+                    message.innerText = "Your additional message goes here.";
+            }
+
+            modalImage.src = imagePath;
+            modal.style.display = "block";
+            document.getElementById("overlay").style.display = "flex";
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("modal");
+            var overlay = document.getElementById("overlay");
+
+            // Hide modal and overlay
+            modal.style.display = "none";
+            overlay.style.display = "none";
+
+            // Remove the preview card
+            var card = event.currentTarget;
+            card.style.display = "none";
+        }
+    </script>
+</body>
+
+</html>
